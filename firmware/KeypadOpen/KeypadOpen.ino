@@ -181,21 +181,20 @@ uint8_t triangle(uint8_t phase) {
 }
 
 void wheel(uint8_t index, uint8_t hue, uint8_t intensity) {
-  uint8_t segment = hue / 43;
-  uint8_t rising = (hue % 43) * 6;
-  uint8_t falling = 255 - rising;
   uint8_t red = 0;
   uint8_t green = 0;
   uint8_t blue = 0;
-  if (segment < 2) {
-    red = falling;
-    green = rising;
-  } else if (segment < 4) {
-    green = falling;
-    blue = rising;
+  if (hue < 85) {
+    red = 255 - hue * 3;
+    green = hue * 3;
+  } else if (hue < 170) {
+    hue -= 85;
+    green = 255 - hue * 3;
+    blue = hue * 3;
   } else {
-    red = rising;
-    blue = falling;
+    hue -= 170;
+    blue = 255 - hue * 3;
+    red = hue * 3;
   }
   setLed(index, ((uint16_t)red * intensity) / 255,
          ((uint16_t)green * intensity) / 255,

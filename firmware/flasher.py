@@ -1,4 +1,4 @@
-"""Loopback-only browser front end for pinned KeypadOpen images and wchisp."""
+"""Loopback-only browser front end for pinned KeypadOpen firmware and wchisp."""
 
 import argparse
 import json
@@ -19,6 +19,8 @@ from preflight import inspect_hex
 
 ROOT = Path(__file__).resolve().parent
 WEB = ROOT / "flasher"
+
+
 @dataclass(frozen=True)
 class ImageSpec:
     path: Path
@@ -29,27 +31,17 @@ class ImageSpec:
     confirmation: str
 
 
-V2_IMAGE = ImageSpec(
-    ROOT / "release" / "KeypadOpen-v2.hex",
-    "631c148775cec49ad15d1b5c2ae9d164493c9ff42332eb0aa6210d0e39fd8da5",
-    11905, 0x2ED0, "owner-tested-v2", "REPLACE STOCK FIRMWARE",
-)
-V1_IMAGE = ImageSpec(
-    ROOT / "release" / "KeypadOpen-v1.hex",
-    "c4c2c0c185a3ac0ac13c79c9aa6236a05014c9c1cc39d96c55dfe328efebe5b5",
-    9666, 0x260F, "tested-v1", "REPLACE STOCK FIRMWARE",
-)
-USB_NAME_CANDIDATE = ImageSpec(
-    ROOT / "build" / "usb-names" / "KeypadOpen.ino.hex",
-    "89e26537091e8549df46e445f8ea0ab1f01506b89595f0301c633e034fedc8d6",
-    11913, 0x2ED8, "usb-name-candidate", "TEST USB NAMES",
+V21_IMAGE = ImageSpec(
+    ROOT / "release" / "KeypadOpen-v2.1.hex",
+    "c7ff2e8d5d3b9615ec0a1f9307173dfcb66c2a18de5e9dc56d72a9e5eda9c8f6",
+    11905, 0x2ED0, "owner-tested-v2.1", "REPLACE STOCK FIRMWARE",
 )
 CHIP = re.compile(r"Chip:\s*CH552\[0x5211\]", re.IGNORECASE)
 VERSION = re.compile(r"BTVER\(bootloader ver\):\s*02\.50", re.IGNORECASE)
 UID = re.compile(r"Chip UID:\s*([0-9A-F-]+)", re.IGNORECASE)
 
 
-def checked_image(spec=V2_IMAGE):
+def checked_image(spec=V21_IMAGE):
     image = inspect_hex(spec.path)
     if (image["sha256"] != spec.sha256 or image["bytes"] != spec.bytes
             or image["last_address"] != spec.last_address):
@@ -70,7 +62,7 @@ def run_wchisp(executable, *arguments, timeout=30):
     return output
 
 
-def probe(executable, spec=V2_IMAGE):
+def probe(executable, spec=V21_IMAGE):
     checked_image(spec)
     output = run_wchisp(executable, "info")
     if not CHIP.search(output) or not VERSION.search(output):
@@ -81,7 +73,7 @@ def probe(executable, spec=V2_IMAGE):
     return uid.group(1).upper(), output
 
 
-def flash(executable, acknowledged_uid, spec=V2_IMAGE):
+def flash(executable, acknowledged_uid, spec=V21_IMAGE):
     checked_image(spec)
     uid, _ = probe(executable, spec)
     if uid != acknowledged_uid:
@@ -95,7 +87,7 @@ def flash(executable, acknowledged_uid, spec=V2_IMAGE):
 class Installer(ThreadingHTTPServer):
     daemon_threads = True
 
-    def __init__(self, executable, port, managed_tool=None, image_spec=V2_IMAGE):
+    def __init__(self, executable, port, managed_tool=None, image_spec=V21_IMAGE):
         super().__init__(("127.0.0.1", port), Handler)
         self.executable = executable
         self.managed_tool = managed_tool
@@ -212,15 +204,10 @@ def main():
     parser.add_argument("--wchisp", type=Path, help="Path to the tested wchisp executable")
     parser.add_argument("--port", type=int, default=0)
     parser.add_argument("--no-browser", action="store_true")
-    image_options = parser.add_mutually_exclusive_group()
-    image_options.add_argument("--v1", action="store_true", help="Use the earlier v1 image for recovery")
-    image_options.add_argument("--usb-name-candidate", action="store_true",
-                               help="Test the locally built USB-name image; not included in Windows packages")
     args = parser.parse_args()
     if sys.platform != "win32":
         parser.error("This flasher supports Windows 11 only")
-    image_spec = (USB_NAME_CANDIDATE if args.usb_name_candidate else
-                  V1_IMAGE if args.v1 else V2_IMAGE)
+    image_spec = V21_IMAGE
     executable_folder = Path(sys.executable if getattr(sys, "frozen", False) else __file__).resolve().parent
     managed = managed_tool_path() if sys.platform == "win32" else None
     if args.wchisp:

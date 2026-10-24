@@ -1,16 +1,8 @@
 const byId = (id) => document.getElementById(id);
 const images = {
-  "owner-tested-v2": {
-    sha256: "631c148775cec49ad15d1b5c2ae9d164493c9ff42332eb0aa6210d0e39fd8da5",
+  "owner-tested-v2.1": {
+    sha256: "c7ff2e8d5d3b9615ec0a1f9307173dfcb66c2a18de5e9dc56d72a9e5eda9c8f6",
     confirmation: "REPLACE STOCK FIRMWARE",
-  },
-  "tested-v1": {
-    sha256: "c4c2c0c185a3ac0ac13c79c9aa6236a05014c9c1cc39d96c55dfe328efebe5b5",
-    confirmation: "REPLACE STOCK FIRMWARE",
-  },
-  "usb-name-candidate": {
-    sha256: "89e26537091e8549df46e445f8ea0ab1f01506b89595f0301c633e034fedc8d6",
-    confirmation: "TEST USB NAMES",
   },
 };
 let token = null;
@@ -179,17 +171,9 @@ try {
       result.confirmation !== selectedImage.confirmation || !result.token) {
     throw new Error(result.error || "Image identity mismatch");
   }
-  const recovery = result.imageKind === "tested-v1";
-  const candidate = result.imageKind === "usb-name-candidate";
-  byId("image-name").textContent = candidate ? "KeypadOpen · USB-name test" :
-    recovery ? "KeypadOpen v1 · recovery" : "KeypadOpen v2 · owner-tested";
-  byId("image-description").textContent = candidate
-    ? "Local test image: new USB product and manufacturer names. It has not been flashed or hardware-tested yet."
-    : recovery
-      ? "This optional recovery mode flashes the earlier v1 image. It does not restore factory firmware."
-      : "This package contains the pinned v2 image, tested on one matching keypad. Other board revisions remain unverified.";
-  byId("flash-heading").textContent = candidate ? "Test the new USB names" :
-    recovery ? "Flash the earlier version" : "Replace the stock program";
+  byId("image-name").textContent = "KeypadOpen v2.1 · owner-tested";
+  byId("image-description").textContent = "This package contains the pinned v2.1 image, tested on one matching keypad. Other board revisions remain unverified.";
+  byId("flash-heading").textContent = "Install KeypadOpen v2.1";
   byId("confirmation-text").textContent = selectedImage.confirmation;
   byId("confirmation").placeholder = selectedImage.confirmation;
   token = result.token;

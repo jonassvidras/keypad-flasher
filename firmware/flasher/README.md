@@ -1,13 +1,9 @@
 # KeypadOpen local flasher
 
-The default local installer is pinned to the owner-tested KeypadOpen v2 image.
+The default local installer is pinned to the owner-tested KeypadOpen v2.1 image.
 It runs a loopback-only browser UI backed by `wchisp`; it is **not** a WebUSB
-flasher. The earlier v1 image is available through `--v1` for source-based
-recovery. Neither can restore the factory program.
-
-The source-only `--usb-name-candidate` option is for the owner's local
-[USB-name test](../USB_NAME_TEST.md). It accepts only the pinned candidate
-from `firmware/build/usb-names/`; the Windows package does not include it.
+flasher. The same image can be reflashed through R12 if the application fails
+to start, but it cannot restore the factory program.
 
 ## Windows 11 beta
 
@@ -17,7 +13,8 @@ Build a distributable folder from the repository root:
 powershell -NoProfile -ExecutionPolicy Bypass -File .\firmware\build_windows_installer.ps1
 ```
 
-The package contains only v2 and the local UI. `wchisp.exe` is not bundled;
+The package contains only v2.1 and the local UI.
+`wchisp.exe` is not bundled;
 the user must opt into a download that verifies both its archive and binary
 hashes. The upstream nightly URL may move and fail closed. The installer does
 not change USB drivers. See [the included package guide](WINDOWS_PACKAGE.md).

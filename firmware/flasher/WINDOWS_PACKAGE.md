@@ -1,7 +1,7 @@
-# KeypadOpen v2 installer · Windows 11 beta
+# KeypadOpen v2.1 installer · Windows 11 beta
 
-This folder contains the local installer and the pinned KeypadOpen v2 image.
-The owner tested v2 on one CH552G keypad. Other boards from the same listing
+This folder contains the local installer and the pinned KeypadOpen v2.1 image.
+The owner tested v2.1 on one CH552G keypad. Other boards from the same listing
 may be wired differently. The factory firmware cannot currently be restored.
 See `LICENSE`, `LICENSES/CH55xDuino-LGPL-2.1.txt`, and `THIRD_PARTY.md`
 for source and dependency notices.
@@ -16,12 +16,15 @@ for source and dependency notices.
    button, acknowledge stock-firmware loss, then **Erase, flash and verify**.
    Wait for `Verify OK` before unplugging. Reconnect without bridging R12.
 
-The installer accepts only the included v2 HEX (SHA-256
-`631c148775cec49ad15d1b5c2ae9d164493c9ff42332eb0aa6210d0e39fd8da5`)
+The installer defaults to the included v2.1 HEX (SHA-256
+`c7ff2e8d5d3b9615ec0a1f9307173dfcb66c2a18de5e9dc56d72a9e5eda9c8f6`)
 and a CH552 with bootloader 02.50. These checks do not prove board wiring.
 Never flash merely because the USB ID or MCU matches. If a step fails, stop
 and keep the log; do not repeatedly erase or try another image. The log may
 contain your chip UID or Windows device instance ID; review it before sharing.
+
+If the application fails to start after flashing, the same pinned v2.1 image
+can be reflashed through R12 mode. It cannot restore factory firmware.
 
 `wchisp.exe` is not bundled. The optional download comes from the
 [upstream project](https://github.com/ch32-rs/wchisp), is pinned by archive

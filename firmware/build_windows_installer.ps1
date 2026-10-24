@@ -5,10 +5,10 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $firmware = $PSScriptRoot
-$imageRelative = 'release\KeypadOpen-v2.hex'
+$imageRelative = 'release\KeypadOpen-v2.1.hex'
 $image = Join-Path $firmware $imageRelative
 $digest = (Get-FileHash -LiteralPath $image -Algorithm SHA256).Hash.ToLowerInvariant()
-$expected = '631c148775cec49ad15d1b5c2ae9d164493c9ff42332eb0aa6210d0e39fd8da5'
+$expected = 'c7ff2e8d5d3b9615ec0a1f9307173dfcb66c2a18de5e9dc56d72a9e5eda9c8f6'
 if ($digest -ne $expected) {
     throw 'Firmware image differs from the pinned build. Packaging stopped.'
 }

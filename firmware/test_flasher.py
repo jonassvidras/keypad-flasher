@@ -24,28 +24,11 @@ INFO = "Chip: CH552[0x5211]\nChip UID: 11-22-33-44-00-00-00-00\nBTVER(bootloader
 class FlasherTests(unittest.TestCase):
     def test_known_image(self):
         image = flasher.checked_image()
-        self.assertEqual(image["sha256"], flasher.V2_IMAGE.sha256)
+        self.assertEqual(image["sha256"], flasher.V21_IMAGE.sha256)
         self.assertEqual(image["bytes"], 11905)
         self.assertEqual(image["last_address"], 0x2ED0)
-
-    def test_v1_recovery_image_is_separate_and_pinned(self):
-        image = flasher.checked_image(flasher.V1_IMAGE)
-        self.assertEqual(image["sha256"], flasher.V1_IMAGE.sha256)
-        self.assertEqual(image["bytes"], 9666)
-        self.assertNotEqual(flasher.V2_IMAGE.path, flasher.V1_IMAGE.path)
         with self.assertRaisesRegex(ValueError, "differs from the pinned build"):
-            flasher.checked_image(replace(flasher.V1_IMAGE, sha256="0" * 64))
-
-    def test_usb_name_candidate_is_separate_and_pinned_when_built(self):
-        candidate = flasher.USB_NAME_CANDIDATE
-        self.assertNotEqual(candidate.path, flasher.V2_IMAGE.path)
-        self.assertEqual(candidate.confirmation, "TEST USB NAMES")
-        if not candidate.path.is_file():
-            return
-        image = flasher.checked_image(candidate)
-        self.assertEqual(image["bytes"], 11913)
-        with self.assertRaisesRegex(ValueError, "differs from the pinned build"):
-            flasher.checked_image(replace(candidate, sha256="0" * 64))
+            flasher.checked_image(replace(flasher.V21_IMAGE, sha256="0" * 64))
 
     def test_probe_rejects_wrong_bootloader(self):
         with patch.object(flasher, "run_wchisp", return_value=INFO.replace("02.50", "02.40")):
@@ -166,53 +149,11 @@ class FlasherTests(unittest.TestCase):
                     "confirmation": "replace stock firmware"})[0], 400)
                 self.assertEqual(post("/api/flash", {**approved, "boardChecks": []})[0], 400)
                 self.assertEqual(post("/api/flash", approved)[0], 200)
-                write.assert_called_once_with(server.executable, uid, flasher.V2_IMAGE)
+                write.assert_called_once_with(server.executable, uid, flasher.V21_IMAGE)
         finally:
             server.shutdown()
             server.server_close()
             thread.join()
-
-    def test_v1_recovery_api_uses_only_v1_image(self):
-        server = flasher.Installer(Path("wchisp"), 0, image_spec=flasher.V1_IMAGE)
-        thread = threading.Thread(target=server.serve_forever, daemon=True)
-        thread.start()
-        origin = f"http://127.0.0.1:{server.server_port}"
-        uid = "11-22-33-44-00-00-00-00"
-
-        def post(path, body):
-            connection = HTTPConnection("127.0.0.1", server.server_port)
-            connection.request("POST", path, body=json.dumps(body), headers={
-                "Origin": origin, "Content-Type": "application/json",
-                "X-Installer-Token": server.token,
-            })
-            response = connection.getresponse()
-            result = response.status, json.loads(response.read())
-            connection.close()
-            return result
-
-        try:
-            connection = HTTPConnection("127.0.0.1", server.server_port)
-            connection.request("GET", "/api/status", headers={"Host": f"127.0.0.1:{server.server_port}"})
-            response = connection.getresponse()
-            status = json.loads(response.read())
-            connection.close()
-            self.assertEqual(status["imageKind"], "tested-v1")
-            self.assertEqual(status["sha256"], flasher.V1_IMAGE.sha256)
-            with patch.object(flasher, "probe", return_value=(uid, INFO)), \
-                    patch.object(flasher, "flash", return_value=INFO + "\nVerify OK") as write:
-                approved = {"uid": uid, "confirmation": "REPLACE STOCK FIRMWARE",
-                            "boardChecks": ["chip", "r12", "layout"],
-                            "stockLossAcknowledged": True}
-                self.assertEqual(post("/api/probe", {})[0], 200)
-                self.assertEqual(post("/api/flash", {**approved, "confirmation": "WRONG CONFIRMATION"})[0], 400)
-                write.assert_not_called()
-                self.assertEqual(post("/api/flash", approved)[0], 200)
-                write.assert_called_once_with(server.executable, uid, flasher.V1_IMAGE)
-        finally:
-            server.shutdown()
-            server.server_close()
-            thread.join()
-
 
 if __name__ == "__main__":
     unittest.main()
