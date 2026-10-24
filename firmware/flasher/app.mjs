@@ -196,9 +196,6 @@ try {
   backendReady = result.backendReady === true;
   byId("windows-usb").hidden = result.platform !== "win32";
   byId("tool-setup").hidden = backendReady || !result.toolSetupAvailable;
-  if (result.platform === "darwin") {
-    byId("usb-result").textContent = "macOS: enter R12 mode, then use Check device. No driver change is performed.";
-  }
   byId("digest").textContent = result.sha256;
   status(backendReady
     ? "Verified image ready. Check your board, then connect it in ISP mode."

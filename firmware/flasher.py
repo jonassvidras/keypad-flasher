@@ -217,6 +217,8 @@ def main():
     image_options.add_argument("--usb-name-candidate", action="store_true",
                                help="Test the locally built USB-name image; not included in Windows packages")
     args = parser.parse_args()
+    if sys.platform != "win32":
+        parser.error("This flasher supports Windows 11 only")
     image_spec = (USB_NAME_CANDIDATE if args.usb_name_candidate else
                   V1_IMAGE if args.v1 else V2_IMAGE)
     executable_folder = Path(sys.executable if getattr(sys, "frozen", False) else __file__).resolve().parent

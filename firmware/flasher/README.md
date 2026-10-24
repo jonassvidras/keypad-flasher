@@ -34,10 +34,3 @@ be lost. It rechecks chip UID immediately before calling `wchisp flash
 --no-reset` with erase and verify enabled. If verification fails, stop rather
 than blindly retrying. The matching PCB's empty R12 pads provide the observed
 USB ISP entry path, but compatibility with other board revisions is unproven.
-
-## macOS
-
-Only the [read-only browser probe](../MACOS_TEST.md) is ready for owner testing.
-`run_macos_installer.sh` is source-only and has not passed a Mac hardware flash
-test; no Mac flashing package should be published yet. It requires a separately
-obtained executable `wchisp` and a deliberate, supervised run.

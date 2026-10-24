@@ -8,7 +8,8 @@ for source and dependency notices.
 
 1. Compare your PCB to the board diagram in the installer. Stop if its CH552G,
    empty R12 pads, LEDs, or encoder do not match.
-2. Run `KeypadOpenInstaller.exe`. It opens a local browser page. If needed,
+2. Run `KeypadOpenInstaller.exe`. This unsigned beta app may trigger a Windows
+   security prompt. It opens a local browser page. If needed,
    choose **Download verified wchisp**; the download is optional, hash-checked,
    and does not install a driver.
 3. Follow the page: enter R12 bootloader mode, use the read-only **Check device**

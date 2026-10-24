@@ -21,9 +21,10 @@ The owner-tested v2 image inherits CH55xDuino's USB product string
 `CH55xduino qmk kbd` and manufacturer string `Deqing`. The optional
 `-UseKeypadOpenNames` build changes only those strings to `KeypadOpen` and
 `KeypadOpen Project`; its resulting image requires a separate hardware test. The
-`1209:C55D` identity is registered to CH55xDuino, not this project. Before a
-broad public binary release, confirm its use is acceptable or obtain a
-project-specific PID. Changing the PID also requires a matching Studio update.
+`1209:C55D` identity is registered to CH55xDuino, not this project. It is
+shared with other CH55xDuino HID devices and may conflict with an existing
+Windows driver association. Changing the PID would require a matching Studio
+update; this project does not request its own VID/PID.
 
 To build on Windows, install Arduino CLI 1.4.1 and CH55xDuino 0.0.25, then run
 `firmware/build.ps1` from the project root. The build script compiles only; it
