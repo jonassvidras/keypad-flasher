@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self'; img-src 'self'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="theme-color" content="#10191d">
+  <title>KeypadOpen · Firmware installer</title>
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.mjs"></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar"><div class="brand"><span class="mark">◈</span> keypad<span>open</span><small>INSTALLER / BETA</small></div><span class="local">● Running on this computer</span></header>
+    <main>
+      <section class="hero"><div><span class="eyebrow">REPLACEMENT FIRMWARE</span><h1>Make this keypad yours.</h1><p id="image-description">Checking the pinned firmware image.</p></div><div class="keypad" aria-hidden="true"><div class="keys"><i></i><i></i><i></i></div><div class="knob"></div></div></section>
+
+      <section class="alert"><strong>Read before continuing.</strong> Flashing replaces the factory program, which we cannot restore. A settings dump is not a firmware backup. Other boards from the same listing may have different wiring. This beta is for the measured board layout only.</section>
+
+      <div class="grid">
+        <section class="card"><span class="step">01 / CHECK THE BOARD</span><h2>Match the hardware</h2><p>Compare your board to this layout diagram. It is not a photograph or proof of revision compatibility; the same listing can contain other boards. Do not flash if markings or wiring differ.</p><div class="pcb-photos"><figure><a href="/board.svg" target="_blank" rel="noopener noreferrer"><img src="/board.svg" alt="Reference layout with CH552G U7, empty R12 pads, D7 D6 D5 LEDs and encoder"></a><figcaption>Reference layout · not to scale</figcaption></figure></div><label class="check"><input id="board-chip" type="checkbox"><span>U7 is marked CH552G.</span></label><label class="check"><input id="board-r12" type="checkbox"><span>Empty R12 pads and USB-C location match the diagram.</span></label><label class="check"><input id="board-layout" type="checkbox"><span>Three key switches, D7/D6/D5 LEDs, and knob match.</span></label></section>
+        <section class="card"><span class="step">02 / ENTER USB BOOTLOADER</span><h2>Connect in ISP mode</h2><p>Unplug USB. Bridge the empty R12 pads, connect USB-C, then release the bridge. Do not short MCU pins directly or bridge pads while powered.</p><p class="hint">Expected bootloader USB ID: <code>4348:55E0</code>. Disconnect other WCH bootloader devices. Windows needs a compatible WCH or WinUSB driver. The button below only watches Windows device status; it never installs or changes a driver.</p><button id="windows-usb" class="button secondary">Watch for bootloader · 20s</button><p id="usb-result" class="device-result" role="status">Not checked yet. Click, then connect in R12 mode.</p><p class="hint">If Windows reports a problem, consult the <a href="https://github.com/ch32-rs/wchisp#note-for-windows" target="_blank" rel="noopener noreferrer">official wchisp Windows guide</a>. If the bootloader times out, re-enter R12 mode before **Check device**.</p></section>
+      </div>
+
+      <section class="card action"><div><span class="step">03 / READ-ONLY PROBE</span><h2>Check the connected chip</h2><p>The installer reads the identity and verifies CH552 (0x5211), bootloader 02.50, and the exact local firmware image. It does not write anything yet.</p><div id="tool-setup" class="tool-setup" hidden><strong>Verified ISP tool needed</strong><p>On request, this installer downloads the tested GPL-2.0 <a href="https://github.com/ch32-rs/wchisp/releases/tag/nightly" target="_blank" rel="noopener noreferrer">wchisp release</a> from GitHub. Both archive and executable SHA-256 are checked before it can run. No download happens automatically.</p><button id="install-tool" class="button secondary">Download verified wchisp</button></div><button id="probe" class="button secondary" disabled>Check device</button></div><div class="identity"><span>FIRMWARE IMAGE</span><strong id="image-name">Checking...</strong><small>SHA-256 <code id="digest">Checking…</code></small><span class="divider"></span><span>USB BOOTLOADER</span><strong id="device">Not checked</strong><small id="uid">Connect in ISP mode first</small></div></section>
+
+      <section class="card final"><div><span class="step">04 / ERASE · FLASH · VERIFY</span><h2 id="flash-heading">Review the firmware</h2><p>This erases and programs code flash, then performs a read-back verify. It leaves the device in bootloader mode; after success, unplug and reconnect without bridging R12.</p><label class="check"><input id="risk-check" type="checkbox"><span>I understand the original firmware cannot currently be restored.</span></label><label class="confirm" for="confirmation">Type <code id="confirmation-text">Checking...</code> to enable flashing</label><input id="confirmation" type="text" autocomplete="off" spellcheck="false"><button id="flash" class="button primary" disabled>Erase, flash and verify</button></div><div class="side-note"><b>If a step fails</b><p>Stop and keep the full log. Do not repeatedly erase or try another firmware image. R12 remains the documented recovery path, but it cannot restore the absent factory program.</p></div></section>
+
+      <section class="log-panel"><div class="log-heading"><h2>Session log</h2><button id="copy" class="button quiet">Copy log</button></div><p id="status" role="status" aria-live="polite">Loading verified image…</p><pre id="log">No device commands have run.</pre></section>
+      <footer>Local beta installer · Optional verified tool download from GitHub · Configurator is separate from flashing</footer>
+    </main>
+  </div>
+</body>
+</html>

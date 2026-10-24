@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 470" role="img" aria-labelledby="title desc">
+  <title id="title">KeypadOpen supported board layout</title>
+  <desc id="desc">Reference diagram showing USB-C, CH552G U7, empty R12 pads, three keys, three LEDs, and the encoder.</desc>
+  <rect width="880" height="470" rx="22" fill="#10191d"/>
+  <g fill="none" stroke="#415b57" stroke-width="3">
+    <rect x="23" y="56" width="405" height="320" rx="26"/>
+    <rect x="453" y="56" width="405" height="320" rx="26"/>
+  </g>
+  <g fill="#cce7d5" font-family="Arial, sans-serif" font-size="19" font-weight="bold">
+    <text x="40" y="37">MCU SIDE</text><text x="470" y="37">LED SIDE</text>
+  </g>
+  <g fill="#213831" stroke="#8cbaa0" stroke-width="2">
+    <rect x="90" y="45" width="80" height="40" rx="8"/>
+    <rect x="270" y="128" width="94" height="48" rx="5"/>
+    <rect x="204" y="123" width="43" height="20" rx="3" stroke-dasharray="4 3"/>
+    <rect x="53" y="225" width="95" height="72" rx="8"/>
+    <rect x="177" y="225" width="95" height="72" rx="8"/>
+    <rect x="301" y="225" width="95" height="72" rx="8"/>
+    <rect x="483" y="225" width="95" height="72" rx="8"/>
+    <rect x="607" y="225" width="95" height="72" rx="8"/>
+    <rect x="731" y="225" width="95" height="72" rx="8"/>
+    <circle cx="760" cy="133" r="43"/>
+  </g>
+  <g fill="#d1e7db" font-family="Arial, sans-serif" text-anchor="middle" font-size="16">
+    <text x="130" y="72">USB-C</text><text x="317" y="157">CH552G U7</text>
+    <text x="225" y="116">R12</text>
+    <text x="100" y="267">KEY 1</text><text x="224" y="267">KEY 2</text><text x="348" y="267">KEY 3</text>
+    <text x="530" y="267">KEY 1</text><text x="654" y="267">KEY 2</text><text x="778" y="267">KEY 3</text>
+    <text x="760" y="140">KNOB</text>
+  </g>
+  <g fill="#8bd6a5" stroke="#b3eed0" stroke-width="2">
+    <rect x="512" y="162" width="36" height="28" rx="5"/>
+    <rect x="636" y="162" width="36" height="28" rx="5"/>
+    <rect x="760" y="162" width="36" height="28" rx="5"/>
+  </g>
+  <g fill="#d1e7db" font-family="Arial, sans-serif" text-anchor="middle" font-size="14">
+    <text x="530" y="155">D7</text><text x="654" y="155">D6</text><text x="778" y="155">D5</text>
+  </g>
+  <text x="440" y="425" fill="#9cb7aa" font-family="Arial, sans-serif" font-size="15" text-anchor="middle">Diagram only · confirm markings and wiring before flashing</text>
+</svg>

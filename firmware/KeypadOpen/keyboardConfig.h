@@ -1,0 +1,7 @@
+#ifndef KEYPAD_OPEN_USB_CONFIG_H
+#define KEYPAD_OPEN_USB_CONFIG_H
+
+#define USB_VID 0x1209
+#define USB_PID 0xC55D
+
+#endif

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="theme-color" content="#10191d">
+  <title>KeypadOpen · macOS USB probe</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./mac-probe.mjs"></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar"><div class="brand"><span class="mark">◈</span> keypad<span>open</span><small>MAC USB TEST / READ ONLY</small></div><span class="local">● Local browser page</span></header>
+    <main>
+      <section class="hero"><div><span class="eyebrow">WEBUSB COMPATIBILITY CHECK</span><h1>Can your Mac see the bootloader?</h1><p>This page only requests USB access, identifies the CH552, and reads its bootloader version and chip UID. It has no erase, program, verify-write, or reset action.</p></div><div class="keypad" aria-hidden="true"><div class="keys"><i></i><i></i><i></i></div><div class="knob"></div></div></section>
+      <section class="alert"><strong>Do not flash anything yet.</strong> We have only one tested keypad. A successful probe checks WebUSB access, not that another PCB revision is safe for replacement firmware.</section>
+      <div class="grid">
+        <section class="card"><span class="step">01 / PREPARE</span><h2>Use Chrome or Edge on macOS</h2><p>Unplug the keypad. Bridge the empty R12 pads, connect USB-C, then release the bridge. Do not short MCU pins directly or bridge pads while powered.</p><p class="hint">The USB bootloader should appear as <code>4348:55E0</code>. If it disappears before you select it, reconnect in bootloader mode and try again.</p></section>
+        <section class="card"><span class="step">02 / READ-ONLY USB TEST</span><h2>Choose the bootloader</h2><p>Click below and select the WCH USB ISP device in the browser picker. The page sends only the ISP identify and configuration-read commands.</p><button id="probe" class="button secondary">Connect and check device</button></section>
+      </div>
+      <section class="log-panel"><div class="log-heading"><h2>Session log</h2><button id="copy" class="button quiet">Copy log</button></div><p id="status" role="status" aria-live="polite">No USB access has been requested.</p><pre id="log"></pre></section>
+      <footer>No firmware writes · No account or cloud · Share the log without unplugging during a transfer</footer>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+.DS_Store
+__pycache__/
+*.pyc
+*.log
+*.exe
+*.zip
+.venv/
+firmware/build/
+firmware/dist/
