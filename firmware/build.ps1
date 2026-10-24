@@ -1,5 +1,6 @@
 param(
-    [string]$ArduinoCli = 'arduino-cli'
+    [string]$ArduinoCli = 'arduino-cli',
+    [switch]$UseKeypadOpenNames
 )
 
 $ErrorActionPreference = 'Stop'
@@ -35,6 +36,20 @@ $consumerDescriptor = @'
 $marker = '                // //todo: add media control'
 if (-not $updatedDescriptor.Contains($marker)) { throw 'Unexpected keyboard descriptor; refusing to add consumer report.' }
 $updatedDescriptor = $updatedDescriptor.Replace($marker, $consumerDescriptor)
+if ($UseKeypadOpenNames) {
+    $productPattern = '(?s)__code uint16_t ProductDescriptor\[\] = \{.*?\};'
+    $manufacturerPattern = '(?s)__code uint16_t ManufacturerDescriptor\[\] = \{.*?\};'
+    if ([regex]::Matches($updatedDescriptor, $productPattern).Count -ne 1 -or
+        [regex]::Matches($updatedDescriptor, $manufacturerPattern).Count -ne 1 -or
+        -not [regex]::IsMatch([regex]::Match($updatedDescriptor, $productPattern).Value, "'C'\s*,\s*'H'\s*,\s*'5'\s*,\s*'5'\s*,\s*'x'\s*,\s*'d'") -or
+        -not [regex]::Match($updatedDescriptor, $manufacturerPattern).Value.Contains("'D', 'e', 'q', 'i', 'n', 'g'")) {
+        throw 'Unexpected CH55xDuino USB strings; refusing to build.'
+    }
+    $product = "__code uint16_t ProductDescriptor[] = {`n    (((10 + 1) * 2) | (DTYPE_String << 8)),`n    'K', 'e', 'y', 'p', 'a', 'd', 'O', 'p', 'e', 'n',`n};"
+    $manufacturer = "__code uint16_t ManufacturerDescriptor[] = {`n    (((18 + 1) * 2) | (DTYPE_String << 8)),`n    'K', 'e', 'y', 'p', 'a', 'd', 'O', 'p', 'e', 'n', ' ',`n    'P', 'r', 'o', 'j', 'e', 'c', 't',`n};"
+    $updatedDescriptor = [regex]::Replace($updatedDescriptor, $productPattern, $product)
+    $updatedDescriptor = [regex]::Replace($updatedDescriptor, $manufacturerPattern, $manufacturer)
+}
 [System.IO.File]::WriteAllText($descriptorPath, $updatedDescriptor)
 
 $transportPath = Join-Path $dependency 'USBHIDKeyboardMouse.c'
@@ -65,6 +80,7 @@ void Consumer_pulse(uint8_t usage) {
 [System.IO.File]::WriteAllText($transportPath, $transport)
 
 $output = Join-Path $PSScriptRoot 'build'
+if ($UseKeypadOpenNames) { $output = Join-Path $output 'usb-names' }
 New-Item -ItemType Directory -Path $output -Force | Out-Null
 & $ArduinoCli compile --fqbn 'CH55xDuino:mcs51:ch552:clock=24internal,usb_settings=user266,bootloader_pin=p36,upload_method=usb' --additional-urls $indexUrl --output-dir $output $sketch
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

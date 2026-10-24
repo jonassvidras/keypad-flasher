@@ -39,6 +39,11 @@ V1_IMAGE = ImageSpec(
     "c4c2c0c185a3ac0ac13c79c9aa6236a05014c9c1cc39d96c55dfe328efebe5b5",
     9666, 0x260F, "tested-v1", "REPLACE STOCK FIRMWARE",
 )
+USB_NAME_CANDIDATE = ImageSpec(
+    ROOT / "build" / "usb-names" / "KeypadOpen.ino.hex",
+    "89e26537091e8549df46e445f8ea0ab1f01506b89595f0301c633e034fedc8d6",
+    11913, 0x2ED8, "usb-name-candidate", "TEST USB NAMES",
+)
 CHIP = re.compile(r"Chip:\s*CH552\[0x5211\]", re.IGNORECASE)
 VERSION = re.compile(r"BTVER\(bootloader ver\):\s*02\.50", re.IGNORECASE)
 UID = re.compile(r"Chip UID:\s*([0-9A-F-]+)", re.IGNORECASE)
@@ -207,9 +212,13 @@ def main():
     parser.add_argument("--wchisp", type=Path, help="Path to the tested wchisp executable")
     parser.add_argument("--port", type=int, default=0)
     parser.add_argument("--no-browser", action="store_true")
-    parser.add_argument("--v1", action="store_true", help="Use the earlier v1 image for recovery")
+    image_options = parser.add_mutually_exclusive_group()
+    image_options.add_argument("--v1", action="store_true", help="Use the earlier v1 image for recovery")
+    image_options.add_argument("--usb-name-candidate", action="store_true",
+                               help="Test the locally built USB-name image; not included in Windows packages")
     args = parser.parse_args()
-    image_spec = V1_IMAGE if args.v1 else V2_IMAGE
+    image_spec = (USB_NAME_CANDIDATE if args.usb_name_candidate else
+                  V1_IMAGE if args.v1 else V2_IMAGE)
     executable_folder = Path(sys.executable if getattr(sys, "frozen", False) else __file__).resolve().parent
     managed = managed_tool_path() if sys.platform == "win32" else None
     if args.wchisp:

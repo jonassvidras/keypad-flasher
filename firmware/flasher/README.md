@@ -5,6 +5,10 @@ It runs a loopback-only browser UI backed by `wchisp`; it is **not** a WebUSB
 flasher. The earlier v1 image is available through `--v1` for source-based
 recovery. Neither can restore the factory program.
 
+The source-only `--usb-name-candidate` option is for the owner's local
+[USB-name test](../USB_NAME_TEST.md). It accepts only the pinned candidate
+from `firmware/build/usb-names/`; the Windows package does not include it.
+
 ## Windows 11 beta
 
 Build a distributable folder from the repository root:

@@ -3,7 +3,8 @@
 This folder contains the local installer and the pinned KeypadOpen v2 image.
 The owner tested v2 on one CH552G keypad. Other boards from the same listing
 may be wired differently. The factory firmware cannot currently be restored.
-See `LICENSE` and `THIRD_PARTY.md` for source and dependency notices.
+See `LICENSE`, `LICENSES/CH55xDuino-LGPL-2.1.txt`, and `THIRD_PARTY.md`
+for source and dependency notices.
 
 1. Compare your PCB to the board diagram in the installer. Stop if its CH552G,
    empty R12 pads, LEDs, or encoder do not match.

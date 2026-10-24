@@ -57,5 +57,7 @@ Move-Item -LiteralPath $built -Destination $output
 Copy-Item -LiteralPath (Join-Path $firmware 'flasher\WINDOWS_PACKAGE.md') -Destination (Join-Path $output 'README.md')
 Copy-Item -LiteralPath (Join-Path $firmware 'LICENSE') -Destination (Join-Path $output 'LICENSE')
 Copy-Item -LiteralPath (Join-Path $firmware 'THIRD_PARTY.md') -Destination (Join-Path $output 'THIRD_PARTY.md')
+New-Item -ItemType Directory -Path (Join-Path $output 'LICENSES') -Force | Out-Null
+Copy-Item -LiteralPath (Join-Path $firmware 'LICENSES\CH55xDuino-LGPL-2.1.txt') -Destination (Join-Path $output 'LICENSES\CH55xDuino-LGPL-2.1.txt')
 Write-Host "Windows installer built at $output"
 Write-Host 'wchisp.exe is not bundled. The app offers an opt-in verified download.'

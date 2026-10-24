@@ -36,6 +36,17 @@ class FlasherTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "differs from the pinned build"):
             flasher.checked_image(replace(flasher.V1_IMAGE, sha256="0" * 64))
 
+    def test_usb_name_candidate_is_separate_and_pinned_when_built(self):
+        candidate = flasher.USB_NAME_CANDIDATE
+        self.assertNotEqual(candidate.path, flasher.V2_IMAGE.path)
+        self.assertEqual(candidate.confirmation, "TEST USB NAMES")
+        if not candidate.path.is_file():
+            return
+        image = flasher.checked_image(candidate)
+        self.assertEqual(image["bytes"], 11913)
+        with self.assertRaisesRegex(ValueError, "differs from the pinned build"):
+            flasher.checked_image(replace(candidate, sha256="0" * 64))
+
     def test_probe_rejects_wrong_bootloader(self):
         with patch.object(flasher, "run_wchisp", return_value=INFO.replace("02.50", "02.40")):
             with self.assertRaisesRegex(ValueError, "Expected CH552"):

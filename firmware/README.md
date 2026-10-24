@@ -17,9 +17,10 @@ has the short buyer-facing quick start.
 The firmware exposes a `1209:C55D` composite USB HID device with a vendor Raw
 HID collection (usage `FF60:0061`). [Keypad Studio](https://github.com/jonassvidras/keypad-studio)
 uses this collection to read and save mappings and lighting with read-back.
-The current build inherits CH55xDuino's USB product string `CH55xduino qmk kbd`
-and manufacturer string `Deqing`. These can be changed in the build-time USB
-descriptor, but that creates a new HEX requiring another hardware test. The
+The owner-tested v2 image inherits CH55xDuino's USB product string
+`CH55xduino qmk kbd` and manufacturer string `Deqing`. The optional
+`-UseKeypadOpenNames` build changes only those strings to `KeypadOpen` and
+`KeypadOpen Project`; its resulting image requires a separate hardware test. The
 `1209:C55D` identity is registered to CH55xDuino, not this project. Before a
 broad public binary release, confirm its use is acceptable or obtain a
 project-specific PID. Changing the PID also requires a matching Studio update.
@@ -34,6 +35,11 @@ arduino-cli core install CH55xDuino:mcs51@0.0.25 --additional-urls https://raw.g
 .\firmware\build.ps1
 python .\firmware\preflight.py .\firmware\release\KeypadOpen-v2.hex
 ```
+
+For the local USB-name test only, run
+`.\firmware\build.ps1 -UseKeypadOpenNames` and follow
+[the private test checklist](USB_NAME_TEST.md). The normal build still
+reproduces every Intel HEX record in the tested v2 image.
 
 The source in `KeypadOpen/` uses the measured GPIO map and CH55xDuino's USB
 transport at build time. The release snapshot does not copy the vendor's
