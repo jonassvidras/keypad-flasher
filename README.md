@@ -4,6 +4,8 @@
 
 **Beta:** KeypadOpen v2.1 has been tested on one matching CH552G board, not on every keypad sold under the same listing. Flashing erases the factory program, and we do not have a restorable factory firmware image. Read the [board reference](docs/HARDWARE.md) before continuing.
 
+<p align="center"><a href="https://github.com/jonassvidras/keypad-flasher/releases/download/v2.1.0-beta.1/KeypadOpen-v2.1-Windows11.zip"><strong>Download for Windows 11</strong></a> · <a href="https://github.com/jonassvidras/keypad-flasher/releases/tag/v2.1.0-beta.1">Release notes and checksums</a></p>
+
 <p align="center"><a href="assets/installer-full.png"><img src="assets/installer-preview.png" width="820" alt="KeypadOpen Windows installer showing the board check and USB bootloader steps"></a></p>
 
 <p align="center"><sub>The local Windows installer walks through four steps. Click for the full view.</sub></p>
@@ -23,3 +25,7 @@ After flashing, use [Keypad Studio](https://github.com/jonassvidras/keypad-studi
 The pinned v2.1 image is `firmware/release/KeypadOpen-v2.1.hex` (SHA-256 `c7ff2e8d5d3b9615ec0a1f9307173dfcb66c2a18de5e9dc56d72a9e5eda9c8f6`). Its Intel HEX records match the owner-tested build; only text line endings changed. It cannot restore factory firmware. The [source bundle](https://github.com/jonassvidras/keypad-flasher/releases/download/v2.1.0-beta.1/KeypadOpen-v2.1-source.zip) includes CH55xDuino 0.0.25 and our build changes. Source and Windows build instructions are in `firmware/KeypadOpen/` and `firmware/build.ps1`. CH55xDuino retains its LGPL-2.1 license. The optional `wchisp` tool also remains under its [upstream license](https://github.com/ch32-rs/wchisp/blob/main/LICENSE) and is not included here.
 
 The firmware retains CH55xDuino's shared `1209:C55D` USB ID. Other devices using that ID may conflict with its Windows driver association; check the device and driver before flashing. Our original source is [MIT licensed](LICENSE); [third-party components](THIRD_PARTY.md) keep their own licenses. This repository is separate from Keypad Studio and contains no factory firmware backup.
+
+## Help improve it
+
+This is the final owner-tested build; broader hardware compatibility has not been verified. [Issues and pull requests](https://github.com/jonassvidras/keypad-flasher/issues) are welcome. When reporting another board, share clear PCB markings and the exact failure, but do not post chip UIDs, serial numbers, or logs containing personal paths. Never flash an unverified board to test compatibility.
