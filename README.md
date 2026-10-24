@@ -2,7 +2,7 @@
 
 <p align="center">Your three-key keypad, opened up.<br>Custom firmware, a guided local flasher, and more ways to use the keys, knob, and lights.</p>
 
-**Beta:** KeypadOpen v2 has been tested on one matching CH552G board, not on every keypad sold under the same listing. Flashing erases the factory program, and we do not have a restorable factory firmware image. The current `1209:C55D` USB identity belongs to CH55xDuino and must be replaced with an assigned product ID before a broad public binary release. Read the [board reference](docs/HARDWARE.md) before continuing.
+**Beta:** KeypadOpen v2 has been tested on one matching CH552G board, not on every keypad sold under the same listing. Flashing erases the factory program, and we do not have a restorable factory firmware image. The current `1209:C55D` USB identity is registered to CH55xDuino; its use for this project needs clarification before a broad public binary release. Read the [board reference](docs/HARDWARE.md) before continuing.
 
 ## Windows 11
 
