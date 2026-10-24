@@ -4,6 +4,10 @@
 
 **Beta:** KeypadOpen v2.1 has been tested on one matching CH552G board, not on every keypad sold under the same listing. Flashing erases the factory program, and we do not have a restorable factory firmware image. Read the [board reference](docs/HARDWARE.md) before continuing.
 
+<p align="center"><a href="assets/installer-full.png"><img src="assets/installer-preview.png" width="820" alt="KeypadOpen Windows installer showing the board check and USB bootloader steps"></a></p>
+
+<p align="center"><sub>The local Windows installer walks through four steps. Click for the full view.</sub></p>
+
 ## Windows 11
 
 1. Compare your PCB with the [board reference](docs/HARDWARE.md). Do not flash a look-alike board or a different MCU.
