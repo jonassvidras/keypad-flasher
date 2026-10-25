@@ -12,13 +12,21 @@
 
 ## Windows 11
 
-1. Compare your PCB with the [board reference](docs/HARDWARE.md). Do not flash a look-alike board or a different MCU.
+1. Compare your PCB with the [board photos](#board-photos) and [board reference](docs/HARDWARE.md). Do not flash a look-alike board or a different MCU.
 2. Download `KeypadOpen-v2.1-Windows11.zip` from the [beta release](https://github.com/jonassvidras/keypad-flasher/releases/tag/v2.1.0-beta.1). Extract it, keep all files together, and run `KeypadOpenInstaller.exe`.
 3. Follow its four steps: match the board, enter R12 bootloader mode, run the read-only check, then explicitly approve erase/flash/verify. Wait for **Verify OK** before reconnecting normally.
 
 The installer never changes USB drivers. It can optionally download a checksum-pinned `wchisp` from its [upstream project](https://github.com/ch32-rs/wchisp); that tool is not bundled. The Windows app is unsigned, so Windows may ask you to confirm before opening it. See the [Windows package guide](firmware/flasher/WINDOWS_PACKAGE.md) if bootloader detection fails.
 
 After flashing, use [Keypad Studio](https://github.com/jonassvidras/keypad-studio) to assign keys, shortcuts, media controls, clicks, scrolling, and 12 lighting modes. Settings save on the keypad.
+
+## Board photos
+
+These show the one tested board. Click to enlarge; matching its appearance alone does not verify the wiring.
+
+| Front PCB | Back PCB |
+| :---: | :---: |
+| [<img src="assets/front-pcb.jpg" width="350" alt="Front PCB with three LEDs and a rotary encoder">](assets/front-pcb.jpg) | [<img src="assets/back-pcb.jpg" width="350" alt="Back PCB with CH552G, R12 pads, USB-C, and three key switches">](assets/back-pcb.jpg) |
 
 ## For builders
 
